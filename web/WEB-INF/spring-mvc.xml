@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans   http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/mvc     http://www.springframework.org/schema/mvc/spring-mvc.xsd
+			               http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+			               http://www.springframework.org/schema/jee     http://www.springframework.org/schema/jee/spring-jee.xsd">
+
+    <mvc:annotation-driven/>
+    <context:annotation-config/>
+
+    <bean class="net.sevecek.videoboss.webservice.FilmResource">
+        <constructor-arg ref="filmRepository"/>
+        <constructor-arg ref="jaxbTranslator"/>
+    </bean>
+
+    <bean id="jaxbTranslator"
+          class="net.sevecek.videoboss.util.JaxbTranslator"/>
+
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+        <property name="alwaysUseFullPath" value="true"/>
+        <property name="order" value="0"/>
+        <property name="removeSemicolonContent" value="false"/>
+        <property name="contentNegotiationManager" ref="contentNegotiationManager"/>
+    </bean>
+
+    <bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+        <property name="mediaTypes">
+            <props>
+                <prop key="atom">application/atom+xml</prop>
+                <prop key="rss">application/rss+xml</prop>
+                <prop key="json">application/json</prop>
+                <prop key="xml">application/xml</prop>
+            </props>
+        </property>
+    </bean>
+
+</beans>

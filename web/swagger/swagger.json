@@ -1,0 +1,262 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a sample VideoBoss server.",
+        "version": "1.0.0",
+        "title": "Swagger Films",
+        "contact": {
+            "email": "kamil@sevecek.net"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        }
+    },
+    "host": "localhost",
+    "basePath": "/Spring_MVC-REST-Films",
+    "schemes": [
+        "http"
+    ],
+    "paths": {
+        "/films/all": {
+            "get": {
+                "summary": "Find all IDs of films in the DB",
+                "description": "",
+                "operationId": "findAllFilms",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "first",
+                        "description": "Index of the first film ID",
+                        "required": false,
+                        "type": "int64"
+                    },
+                    {
+                        "in": "query",
+                        "name": "count",
+                        "description": "Number of film IDs",
+                        "required": false,
+                        "type": "int32"
+                    },
+                    {
+                        "in": "query",
+                        "name": "name",
+                        "description": "Filter films by name",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/FilmIDList"
+                        }
+                    }
+                }
+            }
+        },
+        "/films/{id}": {
+            "get": {
+                "summary": "Find film by ID",
+                "description": "",
+                "operationId": "findById",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "Film ID",
+                        "required": true,
+                        "type": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/Film"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update film",
+                "description": "",
+                "operationId": "updateFilm",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "Film ID",
+                        "required": true,
+                        "type": "int64"
+                    },
+                    {
+                        "in": "header",
+                        "name": "If-Match",
+                        "description": "Film Version from ETag",
+                        "required": true,
+                        "type": "int32"
+                    },
+                    {
+                        "in": "body",
+                        "name": "film",
+                        "description": "Film",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Film"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/Film"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete film",
+                "description": "",
+                "operationId": "deleteFilm",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "description": "Film ID",
+                        "required": true,
+                        "type": "int64"
+                    },
+                    {
+                        "in": "header",
+                        "name": "If-Match",
+                        "description": "Film Version from ETag",
+                        "required": true,
+                        "type": "int32"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        },
+        "/films/new": {
+            "post": {
+                "summary": "Add a new film",
+                "description": "",
+                "operationId": "addFilm",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/Film"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Film": {
+            "type": "Object",
+            "required": [
+                "id",
+                "name",
+                "releaseYear"
+            ],
+            "properties": {
+                "id": {
+                    "type": "int64"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "releaseYear": {
+                    "type": "int32"
+                },
+                "externalLink": {
+                    "type": "string"
+                },
+                "rating": {
+                    "type": "double"
+                },
+                "version": {
+                    "type": "int32"
+                }
+            }
+        },
+        "FilmList": {
+            "type": "Object",
+            "properties": {
+                "films": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Film"
+                    }
+                }
+            }
+        },
+        "FilmHref": {
+            "type": "Object",
+            "required": [
+                "href"
+            ],
+            "properties": {
+                "href": {
+                    "type": "int64"
+                }
+            }
+        },
+        "FilmIDList": {
+            "type": "Object",
+            "properties": {
+                "films": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/FilmHref"
+                    }
+                }
+            }
+        }
+    }
+}
